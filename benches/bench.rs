@@ -1,5 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use wabiks::{Rubiks, Side, Direction};
+use crate::rubiks::{Rubiks, Side, Direction};
 use Direction::*;
 use Side::*;
 

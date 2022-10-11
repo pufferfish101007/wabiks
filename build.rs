@@ -52,7 +52,7 @@ fn perm_matrix_by_side(s: u8) -> [u8; 54] {
             27, 28, 53, 30, 31, 52, 33, 34, 51,
             38, 41, 44, 37, 40, 43, 36, 39, 42,
             45, 46, 47, 48, 49, 50, 35, 32, 29
-        ]
+        ],
         _ => unreachable!()
     }
 }
@@ -92,10 +92,19 @@ fn main() {
                 (Up, Clockwise) => {:?},
                 (Down, Anticlockwise) => {:?},
                 (Down, Twice) => {:?},
-                (Dowm, Clockwise) => {:?},
+                (Down, Clockwise) => {:?},
                 (Left, Anticlockwise) => {:?},
                 (Left, Twice) => {:?},
                 (Left, Clockwise) => {:?},
+                (Right, Anticlockwise) => {:?},
+                (Right, Twice) => {:?},
+                (Right, Clockwise) => {:?},
+                (Front, Anticlockwise) => {:?},
+                (Front, Twice) => {:?},
+                (Front, Clockwise) => {:?},
+                (Back, Anticlockwise) => {:?},
+                (Back, Twice) => {:?},
+                (Back, Clockwise) => {:?},
                 _ => todo!(),
             }}
         }}",
