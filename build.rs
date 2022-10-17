@@ -79,6 +79,38 @@ fn perm_matrix(s: u8, d: u8) -> [u8; 54]{
 }
 
 fn main() {
+    let mut memswap_matrices: [String; 18] = Default::default();
+    for side in 0..6 {
+        for dir in 0..3 {
+            let mut swap_len = 0;
+            let mut last_diff = 55isize; // initialise to an impossible value so that things don't go wrong
+            for (dest, src) in perm_matrix(side, dir).iter().enumerate() {
+                println!("1");
+                let this_diff = *src as isize - dest as isize;
+                println!("2");
+                if this_diff == last_diff {
+                    swap_len += 1;
+                } else {
+                    println!("3");
+                    if swap_len > 0 {
+                        if (dest as isize) < *src as isize - swap_len as isize {
+                            println!("3a");
+                            memswap_matrices[(side * 3 + dir) as usize] += &format!("swap_nonoverlapping(ptr.add({:}), ptr.add({:}), {:});", dest - swap_len as usize, src - swap_len, swap_len)[..];
+                        } else {
+                            println!("3b");
+                            for i in 0..swap_len {
+                                memswap_matrices[(side * 3 + dir) as usize] += "panic!(\"overlapping thingies\");";
+                            }
+                        }
+                    }
+                    println!("4");
+                    swap_len = 1;
+                    last_diff = this_diff;
+                }
+            }
+        }
+    }
+
     let out_dir = env::var_os("OUT_DIR").unwrap();
     let dest_path = Path::new(&out_dir).join("move_matrices.rs");
     fs::write(
@@ -105,7 +137,34 @@ fn main() {
                 (Back, Anticlockwise) => {:?},
                 (Back, Twice) => {:?},
                 (Back, Clockwise) => {:?},
-                _ => todo!(),
+            }}
+        }}
+        fn permute(facelets: &mut Facelets, s: Side, d: Direction) {{
+            use std::ptr::swap_nonoverlapping;
+            use Side::*;
+            use Direction::*;
+            let mut ptr = facelets.as_mut_ptr();
+            unsafe {{
+                match (s, d) {{
+                    (Up, Anticlockwise) => {{{:}}},
+                    (Up, Twice) => {{{:}}},
+                    (Up, Clockwise) => {{{:}}},
+                    (Down, Anticlockwise) => {{{:}}},
+                    (Down, Twice) => {{{:}}},
+                    (Down, Clockwise) => {{{:}}},
+                    (Left, Anticlockwise) => {{{:}}},
+                    (Left, Twice) => {{{:}}},
+                    (Left, Clockwise) => {{{:}}},
+                    (Right, Anticlockwise) => {{{:}}},
+                    (Right, Twice) => {{{:}}},
+                    (Right, Clockwise) => {{{:}}},
+                    (Front, Anticlockwise) => {{{:}}},
+                    (Front, Twice) => {{{:}}},
+                    (Front, Clockwise) => {{{:}}},
+                    (Back, Anticlockwise) => {{{:}}},
+                    (Back, Twice) => {{{:}}},
+                    (Back, Clockwise) => {{{:}}},
+                }}
             }}
         }}",
         perm_matrix(0, 0),
@@ -126,6 +185,24 @@ fn main() {
         perm_matrix(5, 0),
         perm_matrix(5, 1),
         perm_matrix(5, 2),
+        memswap_matrices[0],
+        memswap_matrices[1],
+        memswap_matrices[2],
+        memswap_matrices[3],
+        memswap_matrices[4],
+        memswap_matrices[5],
+        memswap_matrices[6],
+        memswap_matrices[7],
+        memswap_matrices[8],
+        memswap_matrices[9],
+        memswap_matrices[10],
+        memswap_matrices[11],
+        memswap_matrices[12],
+        memswap_matrices[13],
+        memswap_matrices[14],
+        memswap_matrices[15],
+        memswap_matrices[16],
+        memswap_matrices[17],
         )
     ).unwrap();
     println!("cargo:rerun-if-changed=build.rs");
